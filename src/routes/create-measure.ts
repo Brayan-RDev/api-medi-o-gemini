@@ -28,7 +28,7 @@ export async function createMeasure(app: FastifyInstance) {
         })
       }
 
-      if(measure_type.toUpperCase() !== "WATER" || measure_type.toUpperCase() !== "GAS"){
+      if(measure_type.toUpperCase() !== "WATER" && measure_type.toUpperCase() !== "GAS"){
         reply.status(400).send({
           error_code: 'INVALID_DATA',
           error_description: "O tipo de medição deve ser 'WATER' ou 'GAS'",
