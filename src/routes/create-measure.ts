@@ -38,38 +38,38 @@ export async function createMeasure(app: FastifyInstance) {
       const measure_value = await processingImageToMeasurement(image)
       const image_url = generateImageUrl(image).url
 
-      // const customer = await prisma.customer.create({
-      //   data: {
-      //     customer_code,
-      //     Measurement: {
-      //       createMany: {
-      //         data: [
-      //           {
-      //             measure_value: measure_value,
-      //             measure_type: measure_type,
-      //             measure_datetime: measure_datetime,
-      //             image_url: image_url
-      //           },
-      //         ]
-      //       }
-      //     }
-      //   }
-      // })
+      const customer = await prisma.customer.create({
+        data: {
+          customer_code,
+          Measurement: {
+            createMany: {
+              data: [
+                {
+                  measure_value: measure_value,
+                  measure_type: measure_type,
+                  measure_datetime: measure_datetime,
+                  image_url: image_url
+                },
+              ]
+            }
+          }
+        }
+      })
 
-      // const measurement = await prisma.measurement.findFirst({
-      //   where: {
-      //     customer_id: customer.id,
-      //     measure_datetime: measure_datetime,
-      //   },
-      //   select: {
-      //     measure_uuid: true, 
-      //   },
-      // });
+      const measurement = await prisma.measurement.findFirst({
+        where: {
+          customer_id: customer.id,
+          measure_datetime: measure_datetime,
+        },
+        select: {
+          measure_uuid: true, 
+        },
+      });
 
-      // reply.status(200).send({
-      //   "image_url": image_url,
-      //   "measure_value": measure_value,
-      //   "measure_uuid": measurement?.measure_uuid
-      // })
+      reply.status(200).send({
+        "image_url": image_url,
+        "measure_value": measure_value,
+        "measure_uuid": measurement?.measure_uuid
+      })
     })
 }
